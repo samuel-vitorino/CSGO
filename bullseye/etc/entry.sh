@@ -18,6 +18,27 @@ if  [ ! -z "$SOURCEMOD_VERSION" ] && [ ! -d "${STEAMAPPDIR}/${STEAMAPP}/addons/s
 	wget -qO- https://sm.alliedmods.net/smdrop/"${SOURCEMOD_VERSION}"/"${LATESTSM}" | tar xvzf - -C "${STEAMAPPDIR}/${STEAMAPP}"
 fi
 
+if  [ ! -z "$GET5_VERSION" ] && [ ! -f "${STEAMAPPDIR}/${STEAMAPP}/addons/sourcemod/plugins/get5.smx" ]; then
+	wget -qO- https://github.com/splewis/get5/releases/download/v"${GET5_VERSION}"/get5-v"${GET5_VERSION}".tar.gz | tar xvzf - -C "${STEAMAPPDIR}/${STEAMAPP}"
+fi
+
+if  [ ! -z "$STEAMWORKS_VERSION" ] && [ ! -f "${STEAMAPPDIR}/${STEAMAPP}/addons/sourcemod/extensions/SteamWorks.ext.so" ]; then
+	wget -qO- https://github.com/KyleSanderson/SteamWorks/releases/download/"${STEAMWORKS_VERSION}"/package-lin.tgz | tar xvzf - --strip-components=1 -C "${STEAMAPPDIR}/${STEAMAPP}"
+fi
+
+if [ -v MATCH_CONFIG ] && [ -v EVENT_API_URL ]; then
+    echo $MATCH_CONFIG > ${STEAMAPPDIR}/${STEAMAPP}/match_config.json
+    echo 'get5_autoload_config "match_config.json"' > ${STEAMAPPDIR}/${STEAMAPP}/cfg/sourcemod/get5.cfg
+    echo "get5_remote_log_url \"${EVENT_API_URL}\"" >> ${STEAMAPPDIR}/${STEAMAPP}/cfg/sourcemod/get5.cfg
+elif [ -v EVENT_API_URL ]; then
+    echo "get5_remote_log_url \"${EVENT_API_URL}\"" > ${STEAMAPPDIR}/${STEAMAPP}/cfg/sourcemod/get5.cfg
+elif [ -v MATCH_CONFIG ]; then
+    echo $MATCH_CONFIG > ${STEAMAPPDIR}/${STEAMAPP}/match_config.json
+    echo 'get5_autoload_config match_config.json' > ${STEAMAPPDIR}/${STEAMAPP}/cfg/sourcemod/get5.cfg
+else
+    echo 'get5_check_auths 0' > ${STEAMAPPDIR}/${STEAMAPP}/cfg/sourcemod/get5.cfg
+fi
+
 # Is the config missing?
 if [ ! -f "${STEAMAPPDIR}/${STEAMAPP}/cfg/server.cfg" ]; then
 	# overwrite the base config files with the baked in ones
@@ -61,10 +82,6 @@ EOM
 				+tv_port "${SRCDS_TV_PORT}" \
 				+clientport "${SRCDS_CLIENT_PORT}" \
 				-maxplayers_override "${SRCDS_MAXPLAYERS}" \
-				+game_type "${SRCDS_GAMETYPE}" \
-				+game_mode "${SRCDS_GAMEMODE}" \
-				+mapgroup "${SRCDS_MAPGROUP}" \
-				+map "${SRCDS_STARTMAP}" \
 				+sv_setsteamaccount "${SRCDS_TOKEN}" \
 				+sv_region "${SRCDS_REGION}" \
 				+net_public_adr "${SRCDS_NET_PUBLIC_ADDRESS}" \
@@ -87,13 +104,8 @@ else
 				+tv_port "${SRCDS_TV_PORT}" \
 				+clientport "${SRCDS_CLIENT_PORT}" \
 				-maxplayers_override "${SRCDS_MAXPLAYERS}" \
-				+game_type "${SRCDS_GAMETYPE}" \
-				+game_mode "${SRCDS_GAMEMODE}" \
-				+mapgroup "${SRCDS_MAPGROUP}" \
-				+map "${SRCDS_STARTMAP}" \
 				+sv_setsteamaccount "${SRCDS_TOKEN}" \
 				+rcon_password "${SRCDS_RCONPW}" \
-				+sv_password "${SRCDS_PW}" \
 				+sv_region "${SRCDS_REGION}" \
 				+net_public_adr "${SRCDS_NET_PUBLIC_ADDRESS}" \
 				-ip "${SRCDS_IP}" \
