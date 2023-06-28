@@ -40,7 +40,6 @@ FROM build_stage AS bullseye-base
 ENV SRCDS_FPSMAX=300 \
 	SRCDS_TICKRATE=128 \
 	SRCDS_PORT=27015 \
-	SRCDS_TV_PORT=27020 \
 	SRCDS_CLIENT_PORT=27005 \
 	SRCDS_NET_PUBLIC_ADDRESS="0" \
 	SRCDS_IP="0" \
@@ -64,8 +63,7 @@ CMD ["bash", "entry.sh"]
 
 # Expose ports
 EXPOSE 27015/tcp \
-	27015/udp \
-	27020/udp
+	27015/udp
 
 FROM bullseye-base AS bullseye-metamod
 

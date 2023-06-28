@@ -79,7 +79,6 @@ EOM
 				+fps_max "${SRCDS_FPSMAX}" \
 				-tickrate "${SRCDS_TICKRATE}" \
 				-port "${SRCDS_PORT}" \
-				+tv_port "${SRCDS_TV_PORT}" \
 				+clientport "${SRCDS_CLIENT_PORT}" \
 				-maxplayers_override "${SRCDS_MAXPLAYERS}" \
 				+sv_setsteamaccount "${SRCDS_TOKEN}" \
@@ -101,7 +100,6 @@ else
 				+fps_max "${SRCDS_FPSMAX}" \
 				-tickrate "${SRCDS_TICKRATE}" \
 				-port "${SRCDS_PORT}" \
-				+tv_port "${SRCDS_TV_PORT}" \
 				+clientport "${SRCDS_CLIENT_PORT}" \
 				-maxplayers_override "${SRCDS_MAXPLAYERS}" \
 				+sv_setsteamaccount "${SRCDS_TOKEN}" \
